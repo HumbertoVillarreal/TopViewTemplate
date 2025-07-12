@@ -124,7 +124,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: TownSheet
     originalName: 
-    pivot: {x: 0.8333333, y: -1.0253165}
+    pivot: {x: 0.5909091, y: -0.6666667}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,8 +132,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 144
-      height: 79
+      width: 176
+      height: 96
     spriteID: 5a9ad3cb2518496428fd7abcd21e3cbf
     spriteBone: []
     spriteOutline: []
@@ -156,10 +156,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 81
-        width: 144
-        height: 79
+        x: 16
+        y: 64
+        width: 176
+        height: 96
       spriteId: 5a9ad3cb2518496428fd7abcd21e3cbf
     linkedCells: []
     parentIndex: -1
