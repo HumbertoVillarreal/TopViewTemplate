@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1911b00fe514e96489d48d07aa880b59
+guid: ae6edaab87401b2479db4dd3b49fa1e3
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -124,7 +124,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: TownSheet
     originalName: 
-    pivot: {x: 0.5198556, y: 0}
+    pivot: {x: 0.6629834, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,9 +132,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 277
+      width: 181
       height: 160
-    spriteID: 3fcf8d6e0d3c9944fb0a87450c31389d
+    spriteID: 5a9ad3cb2518496428fd7abcd21e3cbf
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -158,9 +158,9 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 0
-        width: 277
+        width: 181
         height: 160
-      spriteId: 3fcf8d6e0d3c9944fb0a87450c31389d
+      spriteId: 5a9ad3cb2518496428fd7abcd21e3cbf
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -179,4 +179,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 288, y: 160}
+  canvasSize: {x: 240, y: 160}
