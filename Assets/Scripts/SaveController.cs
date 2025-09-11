@@ -1,15 +1,21 @@
 using Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
     private string saveLocation;
+    private InventoryController invController;
+    private HotBarController hotbarController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
+        invController = FindAnyObjectByType<InventoryController>();
+        hotbarController = FindAnyObjectByType<HotBarController>();
         LoadGame();
     }
 
@@ -20,7 +26,9 @@ public class SaveController : MonoBehaviour
         SaveData saveData = new SaveData
         {
             playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
-            mapBoundry = FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D.gameObject.name
+            mapBoundry = FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D.gameObject.name,
+            inventorySaveData = invController.GetInventoryItems(),
+            hotbarSaveData = hotbarController.GetHotbarItems()
         };
 
         File.WriteAllText(saveLocation, JsonUtility.ToJson(saveData));
@@ -31,12 +39,19 @@ public class SaveController : MonoBehaviour
         if (File.Exists(saveLocation))
         {
             SaveData saveData = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveLocation));
+            //Debug.Log(saveData);
             GameObject.FindGameObjectWithTag("Player").transform.position = saveData.playerPosition;
             FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find(saveData.mapBoundry).GetComponent<PolygonCollider2D>();
+
+            //Debug.Log(string.Join(", ", saveData.inventorySaveData));
+            invController.SetInventoryItems(saveData.inventorySaveData);
+            hotbarController.SetHotbarItems(saveData.hotbarSaveData);
         }
         else
         {
             SaveGame();
         }
     }
+
+  
 }
