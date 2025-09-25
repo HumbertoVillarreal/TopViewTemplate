@@ -42,6 +42,7 @@ public class SaveController : MonoBehaviour
             //Debug.Log(saveData);
             GameObject.FindGameObjectWithTag("Player").transform.position = saveData.playerPosition;
             FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find(saveData.mapBoundry).GetComponent<PolygonCollider2D>();
+            MapController_Manual.Instance?.HighlightArea(saveData.mapBoundry);
 
             //Debug.Log(string.Join(", ", saveData.inventorySaveData));
             invController.SetInventoryItems(saveData.inventorySaveData);
