@@ -7,6 +7,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     Transform originalParent;
     CanvasGroup canvasGroup;
 
+    [SerializeField] public float minDropDistance = .5f;
+    [SerializeField] public float maxDropDistance = 1f;
+
+    Vector3 originalScale;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,6 +23,18 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
+
+        // check if current parent is a SmallSlot
+        if (originalParent.CompareTag("SmallSlot"))
+        {
+            // restore to normal scale before saving
+            originalScale = transform.localScale / 0.7f;
+        }
+        else
+        {
+            originalScale = transform.localScale;
+        }
+
         transform.SetParent(transform.root);
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.6f; //semi transparent during drag
@@ -60,13 +77,68 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             //Move item into drop slot
             transform.SetParent(dropSlot.transform); ;
             dropSlot.currentItem = gameObject;
+
+            if (dropSlot.CompareTag("SmallSlot")) 
+            {
+                transform.localScale = originalScale * 0.7f;
+            }
+            else
+            {
+                transform.localScale = originalScale; // restore normal size
+            }
         }
         else
         {
-            transform.SetParent(originalParent);
+
+            //If we are dropping outside of inventory
+            if (!IsWithinInventory(eventData.position)) {
+
+                //Drop Item
+                transform.localScale = originalScale;
+                DropItem(originalSlot);
+            }
+            else
+            {
+                //Return to og slot
+                transform.SetParent(originalParent);
+                transform.localScale = originalScale;
+            }
+
+                
         }
         GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
+
+    bool IsWithinInventory(Vector2 mousePosition)
+    {
+        RectTransform inventoryRect = originalParent.parent.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, mousePosition);
+    }
+
+
+    void DropItem(Slot originalSlot)
+    {
+        originalSlot.currentItem = null;
+
+        //Find Player
+        Transform playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        if (playerTransform == null) {
+            Debug.LogError("Missing Player Tag");
+            return;
+        }
+
+        //Randrom drop position
+        Vector2 dropOffSet = Random.insideUnitCircle * Random.Range(minDropDistance, maxDropDistance);
+        Vector2 dropPosition = (Vector2)playerTransform.position + dropOffSet;
+
+        //Instatiate drop item
+        GameObject dropItem = Instantiate(gameObject, dropPosition, Quaternion.identity);
+        dropItem.GetComponent<BounceEffect>().StartBounce();
+
+        //D3estroy the UI item
+        Destroy(gameObject);
+    }
 
 }
