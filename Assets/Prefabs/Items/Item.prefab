@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 700034110602049430}
   - component: {fileID: -7448120640525577772}
   - component: {fileID: 7379395491361023124}
+  - component: {fileID: -8406112887252360769}
+  - component: {fileID: 3852910364057577958}
   m_Layer: 5
   m_Name: Item
   m_TagString: Item
@@ -40,7 +42,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9199617605458677508
 CanvasRenderer:
@@ -104,6 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e220b4a1779342441985b3cc625556bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minDropDistance: 2
+  maxDropDistance: 3
 --- !u!114 &700034110602049430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +213,31 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-8406112887252360769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938186440168988335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0459751d6227142bade92c014bd3de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resizeScale: 0
+--- !u!114 &3852910364057577958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938186440168988335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57af369fc37cde44c8a8d6025227f3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceHeight: 0.2
+  bounceDuration: 0.3
+  bounceCount: 2
