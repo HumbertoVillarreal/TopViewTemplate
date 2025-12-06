@@ -15,11 +15,11 @@ MonoBehaviour:
   npcName: Dog
   npcPortraits: {fileID: 205362603, guid: afa058fb7badadc47b9d8d8f3f63e7b8, type: 3}
   dialogLines:
-  - This is Dialog 1
-  - This is Dialog 2
-  - This is Dialog 3
-  - This is Dialog 4
-  - This is Dialog 5
+  - Awawa
+  - Awawawawa
+  - Awa
+  - Awawawawawawawa
+  - gotta woof
   autoProgressLines: 0101010100
   autoProgressDelay: 1.5
   typingSpeed: 0.05
