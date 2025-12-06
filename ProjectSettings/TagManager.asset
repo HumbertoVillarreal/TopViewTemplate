@@ -52,6 +52,9 @@ TagManager:
   - name: Collision
     uniqueID: 1121817177
     locked: 0
+  - name: NPC
+    uniqueID: 264456675
+    locked: 0
   - name: Player
     uniqueID: 2443936913
     locked: 0
