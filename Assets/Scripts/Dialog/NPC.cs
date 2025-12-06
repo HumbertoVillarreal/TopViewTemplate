@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,7 +73,7 @@ public class NPC : MonoBehaviour, I_Interactable
             {
                 SoundEffectManager.PlayVoice(dialogData.voiceSound, dialogData.voicePitch);
             }
-            
+
             yield return new WaitForSeconds(dialogData.typingSpeed);
         }
 
