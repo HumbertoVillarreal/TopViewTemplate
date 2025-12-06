@@ -25,15 +25,13 @@ public class PlayerItemCollector : MonoBehaviour
 
             item.IsPickedUp = true;
 
-            Debug.Log("Item Picked");
-
             bool itemAdded = inventoryController.AddItem(collision.gameObject);
-
-            SoundEffectManager.Play("Pickup");
 
 
             if (itemAdded)
             {
+                SoundEffectManager.Play("Pickup"); //Pickup sfx
+
                 // Disable collider just to be extra safe
                 Collider2D itemCollider = collision.GetComponent<Collider2D>();
                 if (itemCollider != null)
