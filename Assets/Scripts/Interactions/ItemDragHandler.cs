@@ -65,9 +65,18 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         if (dropSlot != null) {
             if (dropSlot.currentItem != null) {
                 //Slot has an item -> swap items
+
+                GameObject swappedItem = dropSlot.currentItem;
+
                 dropSlot.currentItem.transform.SetParent(originalSlot.transform);
                 originalSlot.currentItem = dropSlot.currentItem;
                 dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                //Resize swapped item based on new slot
+                if (originalSlot.CompareTag("SmallSlot"))
+                    swappedItem.transform.localScale = swappedItem.GetComponent<Item>().transform.localScale * 0.7f;
+                else
+                    swappedItem.transform.localScale = originalScale;
             }
             else
             {

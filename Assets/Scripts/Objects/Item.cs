@@ -6,6 +6,7 @@ public class Item : MonoBehaviour
 
     public int ID;
     public string Name;
+    public bool IsPickedUp = false;
 
     public virtual void Pickup()
     {

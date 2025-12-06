@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class HotBarController : MonoBehaviour
 {
     public GameObject hotBarPanel;
     public GameObject slotPrefab;
     public int slotCount = 5;
+
+    Vector3 originalScale;
 
     private ItemDictionary itemDictionary;
 
@@ -92,11 +95,21 @@ public class HotBarController : MonoBehaviour
 
                 GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemID);
 
+                
                 if (itemPrefab != null)
                 {
                     GameObject item = Instantiate(itemPrefab, slot.transform);
                     item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                     slot.currentItem = item;
+
+                    Item itemComponent = item.GetComponent<Item>();
+
+                    if (itemComponent != null) {
+                        if (slot.CompareTag("SmallSlot"))
+                            item.transform.localScale = itemComponent.transform.localScale * 0.7f;
+                        else
+                            item.transform.localScale = itemComponent.transform.localScale;
+                    }
                 }
             }
         }
