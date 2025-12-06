@@ -13,6 +13,7 @@ public class SaveController : MonoBehaviour
     private HotBarController hotbarController;
     private Chest[] chests;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -82,6 +83,10 @@ public class SaveController : MonoBehaviour
 
             //Load Chests
             LoadChestStates(saveData.chestSaveData);
+
+            //Load Bg music
+            Debug.Log("MapBoundry: " + saveData.mapBoundry);
+            BgMusicManager.instance.PlayMusicByAreaName(saveData.mapBoundry);
         }
         else
         {

@@ -9,6 +9,7 @@ public class MapTransition : MonoBehaviour
     CinemachineConfiner confiner;
     [SerializeField] Direction direction;
     [SerializeField] float additivePos;
+    [SerializeField] AudioClip areaMusic;
     enum Direction {Up, Down, Left, Right}
 
     private void Awake()
@@ -27,6 +28,7 @@ public class MapTransition : MonoBehaviour
 
             MapController_Manual.Instance?.HighlightArea(mapBoundry.name);
             MapController_Dynamic.Instance?.UpdateCurrentArea(mapBoundry.name);
+            BgMusicManager.instance.PlayMusic(areaMusic);
         }
     }
 

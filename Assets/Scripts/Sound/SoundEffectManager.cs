@@ -55,6 +55,7 @@ public class SoundEffectManager : MonoBehaviour
         audioSource.volume = volume;
         randomPitchAudioSource.volume = volume;
         voiceAudioSource.volume = volume;
+        BgMusicManager.instance.getAudioSource().volume = volume;
     }
 
     public void OnValueChanged()
