@@ -40,7 +40,7 @@ public class InventoryController : MonoBehaviour
             if (slot != null && slot.currentItem == null) {
                 GameObject newItem = Instantiate(itemPrefab, slotTransform);
                 newItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                //newItem.transform.localScale = newItem.transform.localScale / 0.7f;
+                newItem.transform.localScale = Vector3.one;
                 slot.currentItem = newItem;
                 return true;
             }
