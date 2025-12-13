@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -122,6 +123,18 @@ public class InventoryMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveHorizontal(1);
+        }
+
+        //X -> Trash
+        if (Input.GetKeyDown(KeyCode.X) && hasSelection)
+        {
+            MoveSelectorToTrash(selectedIndex);
+        }
+
+        //Quick Assign
+        if (Input.anyKeyDown)
+        {
+            HandleQuckAssign();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -283,10 +296,7 @@ public class InventoryMovement : MonoBehaviour
             else
                 DropTrash(ogSlot);
 
-                hasSelection = false;
-            ogSlot.GetComponent<Image>().color = unselectedColor;
-            ogSlot = null;
-            dropSlot = null;
+         
         }
 
     }
@@ -325,6 +335,11 @@ public class InventoryMovement : MonoBehaviour
         dropSlot.currentItem = ogItem;
         ogSlot.currentItem = dropItem;
         trashIcon.SetActive(false);
+
+        hasSelection = false;
+        ogSlot.GetComponent<Image>().color = unselectedColor;
+        ogSlot = null;
+        dropSlot = null;
     }
 
     private void MoveSelectorToTrash(int prev)
@@ -342,7 +357,7 @@ public class InventoryMovement : MonoBehaviour
 
         if (slot.currentItem == null)
         {
-            Debug.LogWarning("No item in slot to delete.");
+
             inTrash = false;
             trashIcon.SetActive(false);
             ResetSelector();
@@ -360,5 +375,29 @@ public class InventoryMovement : MonoBehaviour
 
         ResetSelector();
 
+    }
+
+
+    //Quick assign to hotbar -> Check wich slot
+    private void HandleQuckAssign()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                MoveSelectedItemToHotbar(i);
+                break;
+            }
+        }
+    }
+
+
+    //Quicj assign to hotbar
+    private void MoveSelectedItemToHotbar(int index)
+    {
+        index += 12;
+        dropSlot = slots[index].GetComponent<Slot>();
+        SwapItems(ogSlot, dropSlot);
+        ogSlot.GetComponent<Image>().color = selectorColor;
     }
 }
