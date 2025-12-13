@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDropDistance: 2
   maxDropDistance: 3
+  worldItemPrefab: {fileID: 7938186440168988335}
 --- !u!114 &700034110602049430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 1
   Name: Red Potion
+  IsPickedUp: 0
 --- !u!212 &-7448120640525577772
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -164,7 +166,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1851030383
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 3966232018238107490, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

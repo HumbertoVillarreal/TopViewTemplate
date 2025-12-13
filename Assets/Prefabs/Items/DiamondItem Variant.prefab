@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: bounceDuration
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 5724798551469575884, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: worldItemPrefab
+      value: 
+      objectReference: {fileID: 3775357476647530954}
     - target: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Name
       value: DiamondItem Variant
@@ -125,3 +129,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+--- !u!1 &3775357476647530954 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+  m_PrefabInstance: {fileID: 6507377230185279333}
+  m_PrefabAsset: {fileID: 0}

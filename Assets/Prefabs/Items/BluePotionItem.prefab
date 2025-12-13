@@ -13,6 +13,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -5832703991090058808, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
     - target: {fileID: 700034110602049430, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: ID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 700034110602049430, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: Name
       value: Blue Potion
       objectReference: {fileID: 0}
@@ -96,6 +100,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5724798551469575884, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: worldItemPrefab
+      value: 
+      objectReference: {fileID: 2096651179836231212}
     - target: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Name
       value: BluePotionItem
@@ -113,3 +121,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+--- !u!1 &2096651179836231212 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+  m_PrefabInstance: {fileID: 8300934153832140931}
+  m_PrefabAsset: {fileID: 0}
