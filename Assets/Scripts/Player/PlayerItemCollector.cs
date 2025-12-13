@@ -31,6 +31,7 @@ public class PlayerItemCollector : MonoBehaviour
             if (itemAdded)
             {
                 SoundEffectManager.Play("Pickup"); //Pickup sfx
+                item.transform.localScale = Vector3.one;
 
                 // Disable collider just to be extra safe
                 Collider2D itemCollider = collision.GetComponent<Collider2D>();
