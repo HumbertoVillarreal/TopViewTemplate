@@ -3,6 +3,8 @@ using UnityEngine;
 public class MenuController : MonoBehaviour
 {
     [SerializeField] GameObject menuCanvas;
+    [SerializeField] TabController tabController;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,8 +20,15 @@ public class MenuController : MonoBehaviour
                 return;
             }
 
+            bool newState = !menuCanvas.activeSelf;
             menuCanvas.SetActive(!menuCanvas.activeSelf);
             PauseController.SetPause(menuCanvas.activeSelf);
+
+            if (newState)
+            {
+                // Re-opened menu ? reactivate current tab
+                tabController.ActivateTab(tabController.activeTab);
+            }
         }
 
     }
