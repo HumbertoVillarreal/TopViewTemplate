@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,10 @@ public class TabController : MonoBehaviour
     public GameObject[] pages;
     public GameObject menuCanvas;
     public int activeTab = 0;
+    //public GameObject selector;
+    [SerializeField] public int invTabIndex = 1;
+
+    public InventoryMovement inventoryMovement;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,7 +43,14 @@ public class TabController : MonoBehaviour
         pages[tabNo].SetActive(true);
         tabImages[tabNo].color = Color.white;
 
-        activeTab = tabNo;
+        if (tabNo == invTabIndex) { 
+            //selector.SetActive(true);
+            StartCoroutine(DelayedReset());
+
+        }
+        //else { selector.SetActive(false); }
+
+            activeTab = tabNo;
 
     }
 
@@ -52,5 +64,11 @@ public class TabController : MonoBehaviour
     {
         int prev = (activeTab - 1 + tabImages.Length) % tabImages.Length;
         ActivateTab(prev);
+    }
+
+    public IEnumerator DelayedReset()
+    {
+        yield return null;
+        inventoryMovement.ResetSelector();
     }
 }
