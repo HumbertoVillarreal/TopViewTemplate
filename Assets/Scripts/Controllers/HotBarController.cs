@@ -32,7 +32,7 @@ public class HotBarController : MonoBehaviour
     {
         for (int i = 0; i < slotCount; i++)
         {
-            if (Keyboard.current[hotbarKeys[i]].wasPressedThisFrame)
+            if (Keyboard.current[hotbarKeys[i]].wasPressedThisFrame && !PauseController.IsGamePaused)
             {
                 //UseItem
                 UseItemInSlot(i);
