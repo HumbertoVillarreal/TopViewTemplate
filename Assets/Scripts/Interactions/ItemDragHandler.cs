@@ -10,6 +10,9 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     [SerializeField] public float minDropDistance = .5f;
     [SerializeField] public float maxDropDistance = 1f;
 
+    [SerializeField] private GameObject worldItemPrefab;
+
+
     Vector3 originalScale;
 
 
@@ -126,7 +129,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
 
 
-    void DropItem(Slot originalSlot)
+    public void DropItem(Slot originalSlot)
     {
         originalSlot.currentItem = null;
 
@@ -143,7 +146,28 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         Vector2 dropPosition = (Vector2)playerTransform.position + dropOffSet;
 
         //Instatiate drop item
-        GameObject dropItem = Instantiate(gameObject, dropPosition, Quaternion.identity);
+        //GameObject dropItem = Instantiate(gameObject, dropPosition, Quaternion.identity);
+        GameObject dropItem = Instantiate(worldItemPrefab, dropPosition, Quaternion.identity);
+        if (originalSlot.CompareTag("SmallSlot"))
+        {
+            //dropItem.transform.localScale = Vector3.one;          // normal world size
+        }
+        else
+        {
+            
+            dropItem.transform.localScale = Vector3.one * 0.7f;   // smaller world size
+        }
+        //dropItem.transform.localScale = Vector3.one;
+
+        //Make item pickable again
+        Item item = dropItem.GetComponent<Item>();
+        if (item != null)
+        {
+            item.IsPickedUp = false;   // RESET PICKUP STATE
+        }
+
+        //if (originalSlot.CompareTag("SmallSlot")) { dropItem.transform.localScale = originalScale; }
+
         dropItem.GetComponent<BounceEffect>().StartBounce();
 
         //D3estroy the UI item
