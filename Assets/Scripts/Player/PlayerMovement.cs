@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     private Rigidbody2D rb;
@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     private Animator animator;
     private bool playingFootsteps = false;
     public float footstepSpeed = 0.5f;
+
+    public Transform Aim;
+    bool isWalking = false;
 
     void Start()
     {
@@ -26,9 +29,18 @@ public class Player : MonoBehaviour
             return;
         }
         rb.linearVelocity = moveInput * moveSpeed;
+
         animator.SetBool("isWalking", rb.linearVelocity.magnitude > 0);
 
-        if(rb.linearVelocity.magnitude > 0 && !playingFootsteps)
+        
+        if (animator.GetBool("isWalking"))
+        {
+            Vector3 vector3 = -(Vector3.left * moveInput.x + Vector3.down * moveInput.y);
+            Aim.rotation = Quaternion.LookRotation(Vector3.forward, vector3);
+        }
+
+
+        if (rb.linearVelocity.magnitude > 0 && !playingFootsteps)
         {
             StartFootsteps();
         }
