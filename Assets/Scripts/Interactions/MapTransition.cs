@@ -10,6 +10,9 @@ public class MapTransition : MonoBehaviour
     [SerializeField] Direction direction;
     [SerializeField] float additivePos;
     [SerializeField] AudioClip areaMusic;
+
+    [SerializeField] Room currRoom;
+
     enum Direction {Up, Down, Left, Right}
 
     private void Awake()
@@ -25,6 +28,8 @@ public class MapTransition : MonoBehaviour
         {
             confiner.m_BoundingShape2D = mapBoundry;
             UpdatePlayerPosition(collision.gameObject);
+
+            currRoom?.ResetEnemies();
 
             MapController_Manual.Instance?.HighlightArea(mapBoundry.name);
             MapController_Dynamic.Instance?.UpdateCurrentArea(mapBoundry.name);
@@ -54,6 +59,18 @@ public class MapTransition : MonoBehaviour
         }
 
     player.transform.position = newPos;
+    }
+
+
+    void ResetEnemies()
+    {
+        Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.ResetPosition();
+        }
+
     }
 
 }
