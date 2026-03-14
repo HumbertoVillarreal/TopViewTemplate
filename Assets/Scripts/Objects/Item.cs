@@ -7,6 +7,7 @@ public class Item : MonoBehaviour
     public int ID;
     public string Name;
     public bool IsPickedUp = false;
+    [SerializeField] private float dropRate;
 
     public virtual void Pickup()
     {
@@ -20,5 +21,11 @@ public class Item : MonoBehaviour
     public virtual void UseItem()
     {
         Debug.Log($"Using item: {Name}");
+    }
+
+
+    public float GetDropRate()
+    {
+        return dropRate;
     }
 }
