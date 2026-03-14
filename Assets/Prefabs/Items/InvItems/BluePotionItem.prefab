@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: worldItemPrefab
       value: 
       objectReference: {fileID: 2096651179836231212}
+    - target: {fileID: 7379395491361023124, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Name
       value: BluePotionItem
