@@ -72,6 +72,7 @@ public class HotBarController : MonoBehaviour
 
     public void SetHotbarItems(List<InventorySaveData> inventorySaveData)
     {
+        Debug.Log("SetHotbarItems");
         //Create inventory panel
         foreach (Transform child in hotBarPanel.transform)
         {

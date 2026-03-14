@@ -46,7 +46,6 @@ public class InventoryController : MonoBehaviour
             }
         }
 
-        Debug.Log("Inventory is full !");
         return false;
     }
 
@@ -86,14 +85,14 @@ public class InventoryController : MonoBehaviour
             Instantiate(slotPrefab, inventoryPanel.transform);
         }
 
-
+        Debug.Log(inventorySaveData);
         //Populate slots with saved items
         foreach (InventorySaveData data in inventorySaveData)
         {
 
             if (data.slotIndex < slotCount)
             {
-                Slot slot = inventoryPanel.transform.GetChild(data.slotIndex+1).GetComponent<Slot>();
+                Slot slot = inventoryPanel.transform.GetChild(data.slotIndex).GetComponent<Slot>();
             
                 GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemID);
 
