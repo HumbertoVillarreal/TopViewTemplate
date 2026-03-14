@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1857926677423158932
+--- !u!1001 &8682398923795166747
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,14 +11,18 @@ PrefabInstance:
     - target: {fileID: -7448120640525577772, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1448271785, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
+      objectReference: {fileID: -1823119108, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
     - target: {fileID: 700034110602049430, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: ID
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 700034110602049430, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: Name
-      value: Ruby
+      value: Banana
+      objectReference: {fileID: 0}
+    - target: {fileID: 700034110602049430, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: dropRate
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2888226531114182605, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Pivot.x
@@ -102,22 +106,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3852910364057577958, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: bounceCount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 3852910364057577958, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
-      propertyPath: bounceDuration
-      value: 0.1
+    - target: {fileID: 5724798551469575884, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: worldItemPrefab
+      value: 
+      objectReference: {fileID: 1608921221851982004}
+    - target: {fileID: 7379395491361023124, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Name
-      value: RubyItem Variant
+      value: BananaItem Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8253931798875344814, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1448271785, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
+      objectReference: {fileID: -1823119108, guid: faa126256db7f844b8ec6ddfb38acfae, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+--- !u!1 &1608921221851982004 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7938186440168988335, guid: 594020a1070335f4286120cd5dc9e110, type: 3}
+  m_PrefabInstance: {fileID: 8682398923795166747}
+  m_PrefabAsset: {fileID: 0}
