@@ -13,10 +13,15 @@ public class WaypointMover : MonoBehaviour
     private int currWaypointIndex;
     private bool isWaiting;
     private bool blocked = false;
+    private Animator animator;
+
+    private float lastInputX;
+    private float lastInputY;
 
     private void Start()
     {
         waypoints = new Transform[waypointFather.childCount];
+        animator = GetComponent<Animator>();
 
         for(int i = 0; i < waypointFather.childCount; i++)
         {
@@ -29,6 +34,9 @@ public class WaypointMover : MonoBehaviour
     {
         if(PauseController.IsGamePaused || isWaiting || blocked)
         {
+            animator.SetBool("isWalking", false);
+            animator.SetFloat("LastInputX", lastInputX);
+            animator.SetFloat("LastInputY", lastInputY);
             return;
         }
 
@@ -40,9 +48,19 @@ public class WaypointMover : MonoBehaviour
     {
         Transform target = waypoints[currWaypointIndex];
 
-        transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+        Vector2 dir = (target.position - transform.position).normalized;
 
-        if(Vector2.Distance(transform.position, target.position) < 0.1f)
+        if (dir.magnitude > 0) { 
+            lastInputX = dir.x;
+            lastInputY = dir.y;
+        }
+
+        transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+        animator.SetFloat("InputX", dir.x);
+        animator.SetFloat("InputY", dir.y);
+        animator.SetBool("isWalking", dir.magnitude > 0f);
+
+        if (Vector2.Distance(transform.position, target.position) < 0.1f)
         {
             //WaitWaipoint
             StartCoroutine(WaitAtWaypoint());
@@ -52,6 +70,11 @@ public class WaypointMover : MonoBehaviour
     IEnumerator WaitAtWaypoint()
     {
         isWaiting = true;
+        animator.SetBool("isWalking", false);
+
+        animator.SetFloat("LastInputX", lastInputX);
+        animator.SetFloat("LastInputY", lastInputY);
+
         yield return new WaitForSeconds(waitTime);
 
         currWaypointIndex = loopWaypoints ? (currWaypointIndex + 1) % waypoints.Length : Mathf.Min(currWaypointIndex + 1, waypoints.Length - 1);
