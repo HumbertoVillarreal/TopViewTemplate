@@ -34,6 +34,8 @@ public class InteractionDetector : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (PauseController.IsMenuOpen) return;
+
         if (context.performed && interactableInRange != null)
         {
             interactableInRange.Interact();

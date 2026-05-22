@@ -24,6 +24,8 @@ public class TabController : MonoBehaviour
 
         if (menuCanvas != null && menuCanvas.activeSelf) {
 
+            
+
             if (Input.GetKeyDown(KeyCode.Q)) { PreviousTab(); }
 
             if (Input.GetKeyDown(KeyCode.E)) { NextTab(); }
@@ -56,12 +58,14 @@ public class TabController : MonoBehaviour
 
     public void NextTab()
     {
+        SoundEffectManager.Play("OpenMenu");
         int next = (activeTab + 1) % tabImages.Length;
         ActivateTab(next);
     }
 
     public void PreviousTab()
     {
+        SoundEffectManager.Play("OpenMenu");
         int prev = (activeTab - 1 + tabImages.Length) % tabImages.Length;
         ActivateTab(prev);
     }

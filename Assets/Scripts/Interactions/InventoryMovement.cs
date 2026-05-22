@@ -215,7 +215,9 @@ public class InventoryMovement : MonoBehaviour
 
     private void MoveSelectorTo(int index, int prev)
     {
-
+        
+        SoundEffectManager.Play("InvMovement");
+        
         if (index < 0 || index >= slots.Count)
             return;
 
@@ -279,6 +281,7 @@ public class InventoryMovement : MonoBehaviour
 
     public void TrySelectOrSwap()
     {
+        SoundEffectManager.Play("ItemSelect");
 
         if (!hasSelection)
         {
@@ -353,7 +356,7 @@ public class InventoryMovement : MonoBehaviour
 
     private void DropTrash(Slot slot)
     {
-
+        SoundEffectManager.Play("DropItem");
 
         if (slot.currentItem == null)
         {

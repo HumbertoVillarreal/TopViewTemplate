@@ -14,15 +14,18 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseController.IsDialogOpen || PauseController.IsGamePaused) return;
         if (Input.GetKeyDown(KeyCode.Tab)) {
             if (!menuCanvas.activeSelf && PauseController.IsGamePaused)
             {
                 return;
             }
 
+            SoundEffectManager.Play("OpenMenu");
+
             bool newState = !menuCanvas.activeSelf;
             menuCanvas.SetActive(!menuCanvas.activeSelf);
-            PauseController.SetPause(menuCanvas.activeSelf);
+            PauseController.SetMenuOpen(menuCanvas.activeSelf);
 
             if (newState)
             {

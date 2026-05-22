@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform Aim;
     bool isWalking = false;
 
+    private Vector2 lastAnimDir = Vector2.down;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,10 +24,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PauseController.IsGamePaused) {
-            rb.linearVelocity = Vector2.zero;
-            animator.SetBool("isWalking", false);
-            StopFootsteps();
+        if (PauseController.IsGamePaused || PauseController.IsDialogOpen || PauseController.IsMenuOpen) {
+
+            if (rb.linearVelocity != Vector2.zero)
+            {
+                rb.linearVelocity = Vector2.zero;
+                StopMovingAnimations();
+            }
+
             return;
         }
         rb.linearVelocity = moveInput * moveSpeed;
@@ -33,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isWalking", rb.linearVelocity.magnitude > 0);
 
         
-        if (animator.GetBool("isWalking"))
+        if (animator.GetBool("isWalking") && !Player.Instance.shieldBlock.IsBlocking)
         {
             Vector3 vector3 = -(Vector3.left * moveInput.x + Vector3.down * moveInput.y);
             Aim.rotation = Quaternion.LookRotation(Vector3.forward, vector3);
@@ -50,19 +56,40 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void StopMovingAnimations()
+    {
+        animator.SetBool("isWalking", false);
+        StopFootsteps();
+        animator.SetFloat("LastInputX", moveInput.x);
+        animator.SetFloat("LastInputY", moveInput.y);
+    }
+
     public void Move(InputAction.CallbackContext context)
     {
-        animator.SetBool("isWalking", true);
+        moveInput = context.ReadValue<Vector2>();
+
+        animator.SetBool("isWalking", moveInput.magnitude > 0);
+
+        if (!Player.Instance.shieldBlock.IsBlocking)
+        {
+            if (moveInput != Vector2.zero)
+                lastAnimDir = moveInput;
+
+            animator.SetFloat("InputX", moveInput.x);
+            animator.SetFloat("InputY", moveInput.y);
+        }
+        else
+        {
+            
+            animator.SetFloat("InputX", lastAnimDir.x);
+            animator.SetFloat("InputY", lastAnimDir.y);
+        }
 
         if (context.canceled)
         {
-            animator.SetBool("isWalking", false);
-            animator.SetFloat("LastInputX", moveInput.x);
-            animator.SetFloat("LastInputY", moveInput.y);
+            animator.SetFloat("LastInputX", lastAnimDir.x);
+            animator.SetFloat("LastInputY", lastAnimDir.y);
         }
-        moveInput = context.ReadValue<Vector2>();
-        animator.SetFloat("InputX", moveInput.x);
-        animator.SetFloat("InputY", moveInput.y);
     }
 
 

@@ -33,6 +33,15 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseController.IsDialogOpen || PauseController.IsMenuOpen)
+        {
+            moveDirection = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
+
+            animator.SetBool("isWalking", false);
+
+            return;
+        }
 
         if (_target != null)
         {

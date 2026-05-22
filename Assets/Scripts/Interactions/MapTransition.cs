@@ -8,12 +8,13 @@ public class MapTransition : MonoBehaviour
     [SerializeField] PolygonCollider2D mapBoundry;
     CinemachineConfiner confiner;
     [SerializeField] Direction direction;
+    [SerializeField] Transform teleportTargetPos;
     [SerializeField] float additivePos;
     [SerializeField] AudioClip areaMusic;
 
     [SerializeField] Room currRoom;
 
-    enum Direction {Up, Down, Left, Right}
+    enum Direction {Up, Down, Left, Right, Teleport}
 
     private void Awake()
     {
@@ -26,8 +27,7 @@ public class MapTransition : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            confiner.m_BoundingShape2D = mapBoundry;
-            UpdatePlayerPosition(collision.gameObject);
+            FadeTransition(collision.gameObject);
 
             currRoom?.ResetEnemies();
 
@@ -37,8 +37,27 @@ public class MapTransition : MonoBehaviour
         }
     }
 
+    async void FadeTransition(GameObject player)
+    {
+        PauseController.SetPause(true);
+
+        await ScreenFader.Instance.FadeOut();
+        confiner.m_BoundingShape2D = mapBoundry;
+        UpdatePlayerPosition(player);
+
+        await ScreenFader.Instance.FadeIn();
+
+        PauseController.SetPause(false);
+    }
+
     private void UpdatePlayerPosition(GameObject player)
     {
+        if (direction.Equals(Direction.Teleport)) {
+            player.transform.position = teleportTargetPos.position;
+            return;
+        }
+
+
         Vector3 newPos = player.transform.position;
 
         switch (direction)

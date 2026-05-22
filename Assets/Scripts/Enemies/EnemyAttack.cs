@@ -64,6 +64,9 @@ public class EnemyAttack : MonoBehaviour
 
     void Shoot()
     {
+        if (PauseController.IsGamePaused || PauseController.IsDialogOpen || PauseController.IsMenuOpen) return;
+
+        SoundEffectManager.Play("Shoot");
         Vector3 spawnPos = ShootPoint.position + ShootPoint.up * spawnOffset;
         GameObject intBullet = Instantiate(bullet, spawnPos  , Aim.rotation, transform);
         intBullet.GetComponent<Rigidbody2D>().AddForce(-Aim.up * fireForce, ForceMode2D.Impulse);
@@ -73,11 +76,14 @@ public class EnemyAttack : MonoBehaviour
 
     void Melee()
     {
+        if (PauseController.IsGamePaused || PauseController.IsDialogOpen || PauseController.IsMenuOpen) return;
+
         StartCoroutine(MeleeAttack());
     }
 
     IEnumerator MeleeAttack()
     {
+        SoundEffectManager.Play("Melee");
         meleeHitbox.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(0.2f);

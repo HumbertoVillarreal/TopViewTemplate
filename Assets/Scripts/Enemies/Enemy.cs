@@ -56,6 +56,8 @@ public class Enemy : MonoBehaviour, IAttacker
 
     public void TakeDamage(float damage)
     {
+        if (PauseController.IsGamePaused) return;
+
         float finalDamage = Mathf.Max(damage - def, 1f);
         currHealth -= finalDamage;
 

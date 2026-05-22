@@ -11,7 +11,11 @@ public class SaveController : MonoBehaviour
     private string saveLocation;
     private InventoryController invController;
     private HotBarController hotbarController;
+    private KeyInventoryController keyInvController;
     private Chest[] chests;
+    public static string playerName = "";
+
+    public static int SelectedSlot = 0;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,9 +30,10 @@ public class SaveController : MonoBehaviour
 
     private void InitializeComponents()
     {
-        saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
+        saveLocation = Path.Combine(Application.persistentDataPath, $"save_slot_{SelectedSlot}.json");
         invController = FindAnyObjectByType<InventoryController>();
         hotbarController = FindAnyObjectByType<HotBarController>();
+        keyInvController = FindAnyObjectByType<KeyInventoryController>();
         chests = FindObjectsOfType<Chest>();
     }
 
@@ -38,10 +43,12 @@ public class SaveController : MonoBehaviour
     {
         SaveData saveData = new SaveData
         {
+            playerName = playerName,
             playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
             mapBoundry = FindObjectOfType<CinemachineConfiner>().m_BoundingShape2D.gameObject.name,
             inventorySaveData = invController.GetInventoryItems(),
             hotbarSaveData = hotbarController.GetHotbarItems(),
+            keyInvSaveData = keyInvController.GetKeyItems(),
             chestSaveData = GetChestState()
         };
 
@@ -80,16 +87,21 @@ public class SaveController : MonoBehaviour
             //Debug.Log(string.Join(", ", saveData.inventorySaveData));
             invController.SetInventoryItems(saveData.inventorySaveData);
             hotbarController.SetHotbarItems(saveData.hotbarSaveData);
+            keyInvController.SetKeyItems(
+                saveData.keyInvSaveData ?? new List<KeyInventorySaveData>()
+            );
 
             //Load Chests
             LoadChestStates(saveData.chestSaveData);
 
-            //Load Bg music
+            //Load Bg music 
             Debug.Log("MapBoundry: " + saveData.mapBoundry);
             BgMusicManager.instance.PlayMusicByAreaName(saveData.mapBoundry);
+
         }
         else
         {
+
             SaveGame();
 
             invController.SetInventoryItems(new List<InventorySaveData>());
@@ -112,5 +124,67 @@ public class SaveController : MonoBehaviour
         }
     }
 
-  
+    public static bool SaveExists(int slotFile)
+    {
+        string path = Path.Combine(
+            Application.persistentDataPath,
+            $"save_slot_{slotFile}.json"
+            );
+
+        return File.Exists(path);
+    }
+
+
+    public static void DeleteSaveFile(int slot)
+    {
+        string path = GetSavePath(slot);
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Save deleted: " + path);
+        }
+    }
+
+
+    public static string GetSavePath(int slot)
+    {
+        return Application.persistentDataPath + "/save_slot_" + slot + ".json";
+    }
+
+
+    public static void CopySaveFile(int fromSlot, int toSlot)
+    {
+        string fromPath = GetSavePath(fromSlot);
+        string toPath = GetSavePath(toSlot);
+
+        if (!File.Exists(fromPath))
+        {
+            Debug.LogWarning("Source save does not exist");
+            return;
+        }
+
+        File.Copy(fromPath, toPath, true);
+
+        Debug.Log($"Copied save from {fromSlot} to {toSlot}");
+    }
+
+
+    public static string GetPlayerName(int slot)
+    {
+        string path = GetSavePath(slot);
+
+        if (!File.Exists(path))
+        {
+            return "- - -";
+        }
+
+        SaveData saveData =
+            JsonUtility.FromJson<SaveData>(
+                File.ReadAllText(path)
+            );
+
+        return saveData.playerName;
+    }
+
 }

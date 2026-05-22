@@ -33,19 +33,17 @@ public class SoundEffectManager : MonoBehaviour
 
     public static void Play(string soundName, bool randomPitch = false)
     {
+        //Debug.Log("Trying to play: " + soundName);
+
         AudioClip audioClip = soundEffectLibrary.GetRandromClip(soundName);
-        if (audioClip != null) {
-            if (randomPitch)
-            {
-                randomPitchAudioSource.pitch = Random.Range(1f, 1.5f);
-                randomPitchAudioSource.PlayOneShot(audioClip);
-            }
-            else
-            {
-                audioSource.PlayOneShot(audioClip);
-            }
-                
+
+        if (audioClip == null)
+        {
+            Debug.LogWarning("Clip not found: " + soundName);
+            return;
         }
+
+        audioSource.PlayOneShot(audioClip);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
