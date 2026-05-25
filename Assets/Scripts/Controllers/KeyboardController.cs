@@ -196,10 +196,18 @@ public class KeyboardController : MonoBehaviour
                     DeleteChar();
                     break;
                 case 1:
-                    SaveController.playerName = playerNameInput.text;
 
-                    SceneManager.LoadScene("Game");
-                    Debug.Log("END");
+                    if (playerNameInput.text.Length > 0)
+                    {
+                        SaveController.playerName = playerNameInput.text;
+
+                        SceneManager.LoadScene("Game");
+                        Debug.Log("END");
+                    }
+                    else
+                    {
+                        //Play error SFX
+                    }
                     break;
                 case 2:
                     break;

@@ -7,18 +7,24 @@ public class SaveFileMenuController : MonoBehaviour
 {
     [SerializeField] private SaveFileSlot[] saveSlots;
     [SerializeField] private ActionButtonUI[] actionButtons;
+    [SerializeField] private ActionButtonUI[] confirmationButtons;
+
     [SerializeField] private GameObject MainMenu;
     [SerializeField] private GameObject TitleScreen;
+    [SerializeField] private GameObject ConfirmationScreen;
     [SerializeField] private GameObject PlayerNameScreen;
     [SerializeField] private KeyboardController keyboardController;
 
     private int currFileIndex = 0;
     private int currActionIndex = 0;
+    private int currChoiceIndex = 0;
 
     private int fromSlot = 0;
     private int toSlot = 0;
 
     private MenuState currentState = MenuState.TitleScreen;
+    private HoldState holdState = HoldState.Clean;
+
     [SerializeField] private PlayerInput playerInput;
 
     public MenuState CurrentState
@@ -34,7 +40,16 @@ public class SaveFileMenuController : MonoBehaviour
         TitleScreen,
         CopyState,
         DeleteState,
-        PlayerNameState
+        PlayerNameState,
+        ConfirmState
+    }
+
+
+    public enum HoldState
+    {
+        Clean,
+        Delete,
+        Copy
     }
 
     private void Start()
@@ -133,7 +148,8 @@ public class SaveFileMenuController : MonoBehaviour
                 break;
 
             case 2: //DELETE
-                DeleteFile();
+                StartDeleteProcess();
+                //DeleteFile();
                 break;
         }
     }
@@ -146,6 +162,8 @@ public class SaveFileMenuController : MonoBehaviour
         CleanActions();
         currentState = MenuState.FileSelect;
 
+        ConfirmationScreen.SetActive(false);
+
         Debug.Log("DELETE SAVE");
     }
 
@@ -153,6 +171,8 @@ public class SaveFileMenuController : MonoBehaviour
 
     public void OnNavigate(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Navigate");
+
         Vector2 input = ctx.ReadValue<Vector2>();
         bool moved = false;
 
@@ -198,6 +218,20 @@ public class SaveFileMenuController : MonoBehaviour
                 moved = true;
             }
         }
+        else if (currentState == MenuState.ConfirmState)
+        {
+            if (input.x > 0)
+            {
+                MoveConfirmChoice(-1);
+                moved = true;
+            }
+
+            if (input.x < 0)
+            {
+                MoveConfirmChoice(1);
+                moved = true;
+            }
+        }
         else if (currentState == MenuState.PlayerNameState)
         {
             keyboardController.Navigate(ctx);
@@ -209,6 +243,8 @@ public class SaveFileMenuController : MonoBehaviour
     public void OnSubmit(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
+
+        Debug.Log("Submit");
 
         if (currentState == MenuState.FileSelect)
         {
@@ -242,12 +278,30 @@ public class SaveFileMenuController : MonoBehaviour
         }
         else if (currentState == MenuState.CopyState)
         {
-            CopyFile();
+            ConfirmationScreen.SetActive(true);
+
+            currentState = MenuState.ConfirmState;
+            holdState = HoldState.Copy;
+        }
+
+        else if (currentState == MenuState.ConfirmState)
+        {
+            CheckConfirm();
+        }
+        else if (currentState == MenuState.DeleteState)
+        {
+            ConfirmationScreen.SetActive(true);
+
+            currentState = MenuState.ConfirmState;
+            holdState = HoldState.Delete;
+
         }
     }
 
     public void OnCancel(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Cancel");
+
         if (!ctx.performed) return;
 
         if (currentState == MenuState.ActionSelect)
@@ -281,6 +335,12 @@ public class SaveFileMenuController : MonoBehaviour
             keyboardController.Cancel();
             keyboardController.enabled = false;
         }
+        else if (currentState == MenuState.ConfirmState)
+        {
+            ConfirmationScreen.SetActive(false);
+            currentState = MenuState.ActionSelect;
+            holdState = HoldState.Clean;
+        }
         else
         {
             currentState = MenuState.TitleScreen;
@@ -301,10 +361,20 @@ public class SaveFileMenuController : MonoBehaviour
     }
 
 
+    public void StartDeleteProcess()
+    {
+        ConfirmationScreen.SetActive(true);
+
+        currentState = MenuState.ConfirmState;
+        holdState = HoldState.Delete;
+        
+    }
+
+
     public void CopyFile()
     {
 
-       toSlot = currFileIndex;
+        toSlot = currFileIndex;
 
         SaveController.CopySaveFile(fromSlot, toSlot);
 
@@ -319,6 +389,53 @@ public class SaveFileMenuController : MonoBehaviour
         {
             saveSlots[i].VerifyFile();
         }
+    }
+
+
+    void MoveConfirmChoice(int dir)
+    {
+        currChoiceIndex += dir;
+
+        if (currChoiceIndex < 0)
+            currChoiceIndex = confirmationButtons.Length - 1;
+
+        if (currChoiceIndex >= confirmationButtons.Length)
+            currChoiceIndex = 0;
+
+        HoverChoice(currChoiceIndex);
+    }
+
+
+    void HoverChoice(int index)
+    {
+        for (int i = 0; i < confirmationButtons.Length; i++)
+        {
+            confirmationButtons[i].SetHovered(i == index);
+        }
+    }
+
+    void CheckConfirm()
+    {
+        if (currChoiceIndex == 0)
+        {
+
+        }
+        else
+        {
+            if (holdState == HoldState.Copy)
+            {
+                CopyFile();
+            }
+            else if (holdState == HoldState.Delete)
+            {
+                DeleteFile();
+            }
+        }
+
+        ConfirmationScreen.SetActive(false);
+        currChoiceIndex = 0;
+        currentState = MenuState.FileSelect;
+        CleanActions();
     }
 
 }
