@@ -19,10 +19,19 @@ MonoBehaviour:
   - Awawawawa
   - Awa
   - Awawawawawawawa
-  - gotta woof
+  - woof ?
+  - woof ! :D
+  - grrrrr...
   autoProgressLines: 0101010100
+  endDialogLlines: 00000000000101
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSound: {fileID: 8300000, guid: 42d89db39d42e7447bb4f0947e32ff62, type: 3}
   voicePitch: 2
   singleSound: 1
+  choices:
+  - dialogIndex: 4
+    choices:
+    - woof
+    - ...
+    nextDialogIndexes: 0500000006000000

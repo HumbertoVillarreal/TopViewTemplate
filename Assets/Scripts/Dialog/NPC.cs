@@ -8,13 +8,17 @@ public class NPC : MonoBehaviour, I_Interactable
 {
 
     public NPC_Dialog dialogData;
-    public GameObject dialogPanel;
-    public TMP_Text dialogText, nameText;
-    public Image portraitImage;
-
+    private DialogController dialogUI;
 
     private int dialogIndex;
     private bool isTyping, isDialogActive;
+
+
+    private void Start()
+    {
+        dialogUI = DialogController.Instance;
+    }
+
 
     public bool CanInteract()
     {
@@ -41,10 +45,9 @@ public class NPC : MonoBehaviour, I_Interactable
         isDialogActive = true;
         dialogIndex = 0;
 
-        nameText.SetText(dialogData.npcName);
-        portraitImage.sprite = dialogData.npcPortraits;
+        dialogUI.SetNPCInfo(dialogData.npcName, dialogData.npcPortraits);
 
-        dialogPanel.SetActive(true);
+        dialogUI.showDialogUI(true);
         PauseController.SetPause(true);
 
         //Type Line
@@ -55,7 +58,7 @@ public class NPC : MonoBehaviour, I_Interactable
     IEnumerator TypeLine()
     {
         isTyping = true;
-        dialogText.SetText("");
+        dialogUI.SetDialogText("");
 
         if (dialogData.singleSound) {
 
@@ -68,7 +71,7 @@ public class NPC : MonoBehaviour, I_Interactable
 
         foreach(char letter in dialogData.dialogLines[dialogIndex])
         {
-            dialogText.text += letter;
+            dialogUI.SetDialogText(dialogUI.dialogText.text += letter);
             if (!dialogData.singleSound)
             {
                 SoundEffectManager.PlayVoice(dialogData.voiceSound, dialogData.voicePitch);
@@ -92,7 +95,7 @@ public class NPC : MonoBehaviour, I_Interactable
     {
         if (isTyping) { 
             StopAllCoroutines();
-            dialogText.SetText(dialogData.dialogLines[dialogIndex]);
+            dialogUI.SetDialogText(dialogData.dialogLines[dialogIndex]);
             isTyping= false;
         }
         else if (++dialogIndex < dialogData.dialogLines.Length)
@@ -110,8 +113,8 @@ public class NPC : MonoBehaviour, I_Interactable
     {
         StopAllCoroutines();
         isDialogActive = false;
-        dialogText.SetText("");
-        dialogPanel.SetActive(false);
+        dialogUI.SetDialogText("");
+        dialogUI.showDialogUI(false);
         PauseController.SetPause(false);
     }
 
