@@ -9,6 +9,19 @@ public class Item : MonoBehaviour
     public bool IsPickedUp = false;
     [SerializeField] private float dropRate;
 
+
+    //Shop fields
+    public int buyPrice = 10;
+    [Range(0, 1)]
+    public float sellPriceMultiplier = 0.5f;
+
+
+    public int GetSellPrice()
+    {
+        return Mathf.RoundToInt(buyPrice * sellPriceMultiplier);
+    }
+
+
     public virtual void Pickup()
     {
         Sprite itemIcon = GetComponent<Image>().sprite;
