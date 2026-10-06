@@ -2116,11 +2116,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135992698}
   m_CullTransparentMesh: 1
---- !u!4 &142107573 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-  m_PrefabInstance: {fileID: 1696050624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &143790888
 GameObject:
   m_ObjectHideFlags: 0
@@ -10984,6 +10979,7 @@ GameObject:
   - component: {fileID: 670704520}
   - component: {fileID: 670704522}
   - component: {fileID: 670704521}
+  - component: {fileID: 670704523}
   m_Layer: 5
   m_Name: ChoicesPanel
   m_TagString: Untagged
@@ -11023,7 +11019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11048,6 +11044,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670704519}
   m_CullTransparentMesh: 1
+--- !u!114 &670704523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670704519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &674388839
 GameObject:
   m_ObjectHideFlags: 0
@@ -23140,8 +23162,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 344218720}
-  - {fileID: 142107573}
-  - {fileID: 1713045515}
   - {fileID: 2106888313}
   - {fileID: 1072229824}
   m_Father: {fileID: 815519049}
@@ -25761,7 +25781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1316025053
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25800,7 +25820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.79607844}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -40008,63 +40028,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693429169}
   m_CullTransparentMesh: 1
---- !u!1001 &1696050624
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1205849843}
-    m_Modifications:
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.0227633
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -7.36862
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.02671432
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3971987227208144627, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_Name
-      value: SwordPickup (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
 --- !u!1 &1699045625
 GameObject:
   m_ObjectHideFlags: 0
@@ -40265,11 +40228,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!4 &1713045515 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-  m_PrefabInstance: {fileID: 2022092576}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1714967197
 GameObject:
   m_ObjectHideFlags: 0
@@ -68610,63 +68568,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1001 &2022092576
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1205849843}
-    m_Modifications:
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.0227633
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -7.36862
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.02671432
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067543119252791207, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3971987227208144627, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
-      propertyPath: m_Name
-      value: SwordPickup (2)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59900161863110e46ad15ffdebbf3229, type: 3}
 --- !u!1 &2027830070
 GameObject:
   m_ObjectHideFlags: 0
@@ -71021,6 +70922,8 @@ MonoBehaviour:
   dialogText: {fileID: 877988964}
   nameText: {fileID: 924451725}
   portraitImage: {fileID: 1020524544}
+  choiceContainer: {fileID: 670704520}
+  choiceButtonPrefab: {fileID: 5335140246342549268, guid: 3f5b1897a8abc6941997755b36741042, type: 3}
 --- !u!1 &2138989727
 GameObject:
   m_ObjectHideFlags: 0

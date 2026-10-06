@@ -3,6 +3,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class NPC : MonoBehaviour, I_Interactable
 {
@@ -12,6 +14,9 @@ public class NPC : MonoBehaviour, I_Interactable
 
     private int dialogIndex;
     private bool isTyping, isDialogActive;
+
+    private bool isChoosing;
+    private bool choiceInputLocked;
 
 
     private void Start()
@@ -27,15 +32,21 @@ public class NPC : MonoBehaviour, I_Interactable
 
     public void Interact()
     {
-        if (dialogData == null || (PauseController.IsGamePaused && !isDialogActive)) { return; }
+        if (dialogData == null || (PauseController.IsGamePaused && !isDialogActive))
+            return;
+
+        // Don't let the interaction key advance the dialogue
+        // while the player is selecting a choice.
+        if (isChoosing)
+            return;
 
         if (isDialogActive)
         {
-            NextLine(); //Next Line
+            NextLine();
         }
         else
         {
-            StartDialog(); //Start Dialog
+            StartDialog();
         }
     }
 
@@ -51,7 +62,7 @@ public class NPC : MonoBehaviour, I_Interactable
         PauseController.SetPause(true);
 
         //Type Line
-        StartCoroutine(TypeLine());
+        DisplayCurrentLine();
     } 
 
 
@@ -98,9 +109,32 @@ public class NPC : MonoBehaviour, I_Interactable
             dialogUI.SetDialogText(dialogData.dialogLines[dialogIndex]);
             isTyping= false;
         }
-        else if (++dialogIndex < dialogData.dialogLines.Length)
+
+        //Clear choices
+        dialogUI.ClearChoices();
+
+        //Check endDialogLines
+        if (dialogData.endDialogLlines.Length > dialogIndex && dialogData.endDialogLlines[dialogIndex])
         {
-            StartCoroutine(TypeLine());
+            EndDialog();
+            return;
+        }
+
+        //Check choices and show
+        foreach(DialogChoice dialogChoice in dialogData.choices)
+        {
+            if (dialogChoice.dialogIndex == dialogIndex)
+            {
+                //Display choices
+                DisplayChoices(dialogChoice);
+                return;
+            }
+        }
+
+
+        if (++dialogIndex < dialogData.dialogLines.Length)
+        {
+            DisplayCurrentLine();
         }
         else
         {
@@ -116,6 +150,60 @@ public class NPC : MonoBehaviour, I_Interactable
         dialogUI.SetDialogText("");
         dialogUI.showDialogUI(false);
         PauseController.SetPause(false);
+    }
+
+
+    void DisplayChoices(DialogChoice choice)
+    {
+        isChoosing = true;
+        choiceInputLocked = true;
+
+        for (int i = 0; i < choice.choices.Length; i++)
+        {
+            int nextIndex = choice.nextDialogIndexes[i];
+
+            dialogUI.CreateChoiceButton(
+                choice.choices[i],
+                () =>
+                {
+                    if (choiceInputLocked)
+                        return;
+
+                    ChooseOption(nextIndex);
+                }
+            );
+        }
+
+        dialogUI.SelectFirstChoice();
+
+        StartCoroutine(WaitForChoiceInputRelease());
+    }
+
+    void ChooseOption(int nextIndex)
+    {
+        isChoosing = false;
+
+        dialogIndex = nextIndex;
+        dialogUI.ClearChoices();
+
+        DisplayCurrentLine();
+    }
+
+    void DisplayCurrentLine()
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeLine());
+    }
+
+    IEnumerator WaitForChoiceInputRelease()
+    {
+        // Wait until Space is no longer being held.
+        yield return new WaitUntil(() =>
+            Keyboard.current != null &&
+            !Keyboard.current.spaceKey.isPressed
+        );
+
+        choiceInputLocked = false;
     }
 
 }
