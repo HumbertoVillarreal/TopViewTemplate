@@ -34,6 +34,27 @@ public class InventoryController : MonoBehaviour
 
     public bool AddItem(GameObject itemPrefab)
     {
+        Item itemToAdd = itemPrefab.GetComponent<Item>();
+        if (itemToAdd == null) return false;
+
+        //Look for already existing item
+        foreach (Transform slotTransform in inventoryPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+
+            if (slot != null && slot.currentItem != null)
+            {
+                Item slotItem = slot.currentItem.GetComponent<Item>();
+                if (slotItem != null && slotItem.ID == itemToAdd.ID)
+                {
+                    //Stack items
+                    slotItem.AddToStack();
+                    return true;
+                }
+            }
+        } 
+
+        //Look for empty slot
         foreach (Transform slotTransform in inventoryPanel.transform) {
         Slot slot = slotTransform.GetComponent<Slot>();
 
@@ -63,7 +84,11 @@ public class InventoryController : MonoBehaviour
             if (slot.currentItem != null)
             {
                 Item item = slot.currentItem.GetComponent<Item>();
-                invData.Add(new InventorySaveData { itemID = item.ID, slotIndex = slotTransform.GetSiblingIndex() });
+                invData.Add(new InventorySaveData { 
+                    itemID = item.ID, 
+                    slotIndex = slotTransform.GetSiblingIndex(), 
+                    quantity = item.quantity,
+                });
             }
         }
 
@@ -100,6 +125,13 @@ public class InventoryController : MonoBehaviour
                 {
                     GameObject item = Instantiate(itemPrefab, slot.transform);
                     item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    Item itemCompnent = item.GetComponent<Item>();
+                    if (itemCompnent != null && data.quantity > 1) {
+                        itemCompnent.quantity = data.quantity;
+                        itemCompnent.UpdateQuantityDisplay();
+                    }
+
                     slot.currentItem = item;
                 }
             }
