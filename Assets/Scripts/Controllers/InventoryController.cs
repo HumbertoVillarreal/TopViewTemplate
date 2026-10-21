@@ -12,6 +12,19 @@ public class InventoryController : MonoBehaviour
 
     private ItemDictionary itemDictionary;
 
+    public static InventoryController Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1,7 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
 
     Transform originalParent;
@@ -15,11 +16,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     Vector3 originalScale;
 
+    private InventoryController inventoryController;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        inventoryController = InventoryController.Instance;
     }
 
 
@@ -65,30 +69,57 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         Slot originalSlot = originalParent.GetComponent<Slot>();
 
+        if (dropSlot == originalSlot)
+        {
+            transform.SetParent(originalParent);
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            return;
+        }
+
         if (dropSlot != null) {
             if (dropSlot.currentItem != null) {
                 //Slot has an item -> swap items
 
-                GameObject swappedItem = dropSlot.currentItem;
+                Item draggedItem = GetComponent<Item>();
+                Item targetItem = dropSlot.currentItem.GetComponent<Item>();
 
-                dropSlot.currentItem.transform.SetParent(originalSlot.transform);
-                originalSlot.currentItem = dropSlot.currentItem;
-                dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
-                //Resize swapped item based on new slot
-                if (originalSlot.CompareTag("SmallSlot"))
-                    swappedItem.transform.localScale = swappedItem.GetComponent<Item>().transform.localScale * 0.7f;
+                if (draggedItem.ID == targetItem.ID)
+                {
+                    targetItem.AddToStack(draggedItem.quantity);
+                    originalSlot.currentItem = null;
+                    Destroy(gameObject);
+                }
                 else
-                    swappedItem.transform.localScale = originalScale;
+                {
+                    GameObject swappedItem = dropSlot.currentItem;
+
+                    dropSlot.currentItem.transform.SetParent(originalSlot.transform);
+                    originalSlot.currentItem = dropSlot.currentItem;
+                    dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    //Move item into drop slot
+                    transform.SetParent(dropSlot.transform); ;
+                    dropSlot.currentItem = gameObject;
+
+                    GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    //Resize swapped item based on new slot
+                    if (originalSlot.CompareTag("SmallSlot"))
+                        swappedItem.transform.localScale = swappedItem.GetComponent<Item>().transform.localScale * 0.7f;
+                    else
+                        swappedItem.transform.localScale = originalScale;
+                }
+
             }
             else
             {
                 originalSlot.currentItem = null;
+                transform.SetParent(dropSlot.transform); ;
+                dropSlot.currentItem = gameObject;
+
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             }
 
-            //Move item into drop slot
-            transform.SetParent(dropSlot.transform); ;
-            dropSlot.currentItem = gameObject;
 
             if (dropSlot.CompareTag("SmallSlot")) 
             {
@@ -114,11 +145,13 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 //Return to og slot
                 transform.SetParent(originalParent);
                 transform.localScale = originalScale;
+
+
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             }
 
                 
         }
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
 
@@ -131,7 +164,22 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void DropItem(Slot originalSlot)
     {
-        originalSlot.currentItem = null;
+        Item iten = GetComponent<Item>();
+        int quantity = iten.quantity;
+
+        if (quantity > 1) {
+            iten.RemoveFromStack();
+
+            transform.SetParent(originalParent);
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+            quantity = 1;
+        }
+        else
+        {
+            originalSlot.currentItem = null;
+        }
+
 
         //Find Player
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -148,6 +196,10 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         //Instatiate drop item
         //GameObject dropItem = Instantiate(gameObject, dropPosition, Quaternion.identity);
         GameObject dropItem = Instantiate(worldItemPrefab, dropPosition, Quaternion.identity);
+        Item droppedItem = dropItem.GetComponent<Item>();
+        droppedItem.quantity = 1;
+
+
         if (originalSlot.CompareTag("SmallSlot"))
         {
             //dropItem.transform.localScale = Vector3.one;          // normal world size
@@ -171,7 +223,75 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         dropItem.GetComponent<BounceEffect>().StartBounce();
 
         //D3estroy the UI item
-        Destroy(gameObject);
+        if(quantity <= 1 && originalSlot.currentItem == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            //Split stack
+            SplitStack();
+        }
+    }
+
+
+    public void SplitStack()
+    {
+        Item item = GetComponent<Item>();
+        if (item == null || item.quantity <= 1) return;
+
+        if (inventoryController == null) return;
+
+        // Find an empty slot BEFORE modifying the stack
+        Slot emptySlot = null;
+
+        foreach (Transform slotTransform in inventoryController.inventoryPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+
+            if (slot != null && slot.currentItem == null)
+            {
+                emptySlot = slot;
+                break;
+            }
+        }
+
+        // No empty slot available
+        if (emptySlot == null) return;
+
+        int splitAmount = item.quantity / 2;
+
+        item.RemoveFromStack(splitAmount);
+
+        GameObject newItem = item.CloneItem(splitAmount);
+
+        if (newItem == null)
+        {
+            item.AddToStack(splitAmount);
+            return;
+        }
+
+        // Parent to the destination slot first
+        newItem.transform.SetParent(emptySlot.transform, false);
+
+        RectTransform rect = newItem.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            rect.anchoredPosition = Vector2.zero;
+            rect.localScale = Vector3.one;
+        }
+
+        // Register the item in the slot
+        emptySlot.currentItem = newItem;
+
+        // Apply the appropriate size for the destination slot
+        if (emptySlot.CompareTag("SmallSlot"))
+        {
+            newItem.transform.localScale = Vector3.one * 0.7f;
+        }
+    }
 }
